@@ -15,7 +15,7 @@ class AboutTableViewController: UITableViewController {
         let urls = ["tweetbot://current/user_profile/\(username)", "twitterrific://current/profile?screen_name=\(username)", "twitter://user?screen_name=\(username)"]
         for url in urls {
             if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
                 return
             }
         }
@@ -50,7 +50,7 @@ class AboutTableViewController: UITableViewController {
         if indexPath.section == 0 {
             if indexPath.row == 0 {
                 if let url = URL(string: "itms-apps://itunes.apple.com/app/id879924066?action=write-review"), UIApplication.shared.canOpenURL(url) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
                 }
             } else if indexPath.row == 1 {
                 openTwitter("genadyo")
@@ -67,4 +67,9 @@ class AboutTableViewController: UITableViewController {
             }
         }
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }

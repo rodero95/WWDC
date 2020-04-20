@@ -44,7 +44,7 @@ class PartyTableViewController: UITableViewController, SFSafariViewControllerDel
             paragraphStyle.maximumLineHeight = 20.0
             paragraphStyle.minimumLineHeight = 20.0
             let color = UIColor(red: 146.0/255.0, green: 146.0/255.0, blue: 146.0/255.0, alpha: 1.0)
-            let attributedDetails = NSMutableAttributedString(string: party.details, attributes: [NSAttributedStringKey.font: font, NSAttributedStringKey.paragraphStyle: paragraphStyle, NSAttributedStringKey.foregroundColor: color])
+            let attributedDetails = NSMutableAttributedString(string: party.details, attributes: [NSAttributedString.Key.font: font, NSAttributedString.Key.paragraphStyle: paragraphStyle, NSAttributedString.Key.foregroundColor: color])
             detailsLabel.attributedText = attributedDetails;
         }
     }
@@ -103,7 +103,7 @@ class PartyTableViewController: UITableViewController, SFSafariViewControllerDel
 
         // Self sizing cells
         tableView.estimatedRowHeight = 100.0
-        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableView.automaticDimension
 
         if let buildString = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String, let build = Int(buildString), build > UserDefaults.standard.integer(forKey: "lastReviewBuild") {
             UserDefaults.standard.set(build, forKey: "lastReviewBuild")
@@ -120,7 +120,7 @@ class PartyTableViewController: UITableViewController, SFSafariViewControllerDel
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
 
     @IBAction func updateGoing(_ sender: UIButton) {
@@ -165,16 +165,16 @@ class PartyTableViewController: UITableViewController, SFSafariViewControllerDel
             eventStore.requestAccess(to: .event) { [weak self] granted, error in
                 if granted == true {
                     self?.addEvent()
-                } else if let url = URL(string: UIApplicationOpenSettingsURLString) {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                } else if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
                 }
             }
         } else {
             let granted = authorizationStatus == .authorized
             if granted == true {
                 addEvent()
-            } else if let url = URL(string: UIApplicationOpenSettingsURLString) {
-                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            } else if let url = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(url, options: convertToUIApplicationOpenExternalURLOptionsKeyDictionary([:]), completionHandler: nil)
             }
         }
     }
@@ -221,4 +221,9 @@ class PartyTableViewController: UITableViewController, SFSafariViewControllerDel
         }
         controller.dismiss(animated: true, completion: nil)
     }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToUIApplicationOpenExternalURLOptionsKeyDictionary(_ input: [String: Any]) -> [UIApplication.OpenExternalURLOptionsKey: Any] {
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (UIApplication.OpenExternalURLOptionsKey(rawValue: key), value)})
 }
