@@ -23,7 +23,7 @@ DEPENDENCIES:
   - Smooch
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Crashlytics
     - Fabric
     - FLAnimatedImage
@@ -45,4 +45,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 1238d026945cdde4a4bc397fe4838055562888bf
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.9.1
